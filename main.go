@@ -17,7 +17,7 @@ func init() {
 func main() {
 	orm.Debug = true
 	// 自动建表
-	orm.RunSyncdb("default", false, true)
+	// orm.RunSyncdb("default", false, true)
 	//运行
 	beego.Run()
 }

@@ -9,5 +9,6 @@ type AdminController struct {
 // 登录
 func (c *AdminController) Login() {
 	fmt.Println(c.controller, c.action)
-	c.TplName = "index.tpl"
+
+	c.TplName = c.controller + "/login.tpl"
 }
