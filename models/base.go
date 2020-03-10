@@ -5,7 +5,7 @@ import (
     "github.com/astaxie/beego"
     "time"
 )
-
+//luoio test table
 type Users struct {
     Id              int64
     Username        string `orm:"size(30)"`
@@ -18,9 +18,9 @@ type Users struct {
 }
 
 
-
+//注册 model
 func RegisterDB() {
-    //注册 model
+    
     orm.RegisterModel(new(Users))
     //注册驱动
     orm.RegisterDriver("mysql", orm.DRMySQL)
