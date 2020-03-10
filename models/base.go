@@ -9,8 +9,8 @@ import (
 type Users struct {
     Id              int64
     Username        string `orm:"size(30)"`
-    password        string `orm:"size(32)"`
-    nickname        string `orm:"size(20)"`
+    Password        string `orm:"size(32)"`
+    Pickname        string `orm:"size(20)"`
     Created         time.Time `orm:"auto_now_add;type(datetime)"`
     Updated         time.Time `orm:"auto_now;type(datetime)"`
     Headimgurl      string `orm:"size(200)"`
