@@ -23,7 +23,7 @@
         <legend>GO BLOG</legend>
       </fieldset>
 
-      <form class="layui-form" action="/admin/login" method="post">
+      <form class="layui-form" action="/admin/register" method="post">
         <div class="layui-form-item">
           <label class="layui-form-label">用户名</label>
           <div class="layui-input-block">
@@ -39,29 +39,18 @@
         </div>
 
         <div class="layui-form-item">
-          <label class="layui-form-label">验证码</label>
+          <label class="layui-form-label">确认密码</label>
           <div class="layui-input-block">
-            <div class="layui-card">
-              <div class="layui-card-body">
-                <div class="img-box" style="overflow: hidden;">
-                  <img id="slider-bg" src="http://localhost:8080/admin/verifyimg" width="300" height="150">
-                  <img id="slider-block" src="/static/image/block_2.jpg" width="300" height="150">
-                </div>
-
-                <div class="slider-bar" style="margin-top: 10px;">
-                  <div id="slideTest7" class="demo-slider"></div>
-                </div>
-              </div>
-            </div>
+            <input type="password" name="password" placeholder="确认密码" class="layui-input">
           </div>
         </div>
 
         <div class="layui-form-item">
-          <button class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="LAY-user-login-submit">登 入</button> 
+          <button class="layui-btn layui-btn-fluid layui-btn-normal" lay-submit="" lay-filter="LAY-user-login-submit">注 册</button> 
         </div>
 
         <div class="layui-form-item" style="text-align:center;">
-          <a href="register" tyle>注册</a>
+          <a href="login">登录</a>
         </div>
       </form>
     </div>
