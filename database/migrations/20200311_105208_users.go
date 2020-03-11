@@ -26,5 +26,5 @@ func (m *Users_20200311_105208) Up() {
 // Reverse the migrations
 func (m *Users_20200311_105208) Down() {
 	// use m.SQL("DROP TABLE ...") to reverse schema update
-	// m.SQL("DROP TABLE `users`")
+	m.SQL("DROP TABLE `users`")
 }
