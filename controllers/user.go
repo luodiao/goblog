@@ -2,6 +2,7 @@ package controllers
 
 import (
     "github.com/astaxie/beego"
+    "goblog/models"
 )
 
 type UserController struct {
@@ -9,7 +10,9 @@ type UserController struct {
 }
 
 func (c *UserController) Get() {
-    c.Data["Website"] = "beego.me"
-    c.Data["Email"] = "astaxie@gmail.com"
+    var user models.Users
+    count, _ := user.Query().Count()
+    c.Data["Website"] = count
+    c.Data["Email"] = count
     c.TplName = "index.tpl"
 }
