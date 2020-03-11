@@ -4,5 +4,5 @@ runmode = dev
 dbhost = localhost
 dbport = 3306
 dbuser = root
-dbpassword = 
+dbpassword = 123456
 dbname = goblog
