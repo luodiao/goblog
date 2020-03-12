@@ -43,9 +43,9 @@
           <div class="layui-input-block">
             <div class="layui-card">
               <div class="layui-card-body">
-                <div class="img-box" style="overflow: hidden;">
-                  <img id="slider-bg" src="http://localhost:8080/admin/verifyimg" width="300" height="150">
-                  <img id="slider-block" src="/static/image/block_2.jpg" width="300" height="150">
+                <div class="img-box">
+                  <img id="slider-bg" src="{{.verifyImgBg}}" width="300" height="150">
+                  <img id="slider-block" src="{{.verifyImg}}" width="300" height="150">
                 </div>
 
                 <div class="slider-bar" style="margin-top: 10px;">
@@ -76,14 +76,28 @@ layui.use('slider', function(){
   
   //渲染
   slider.render({
-    elem: '#slideTest7'  //绑定元素
-    ,tips: false //关闭默认提示层
+    elem: '#slideTest7'
+    ,tips: false
     ,change: function(value){
       var offLeft = {{.offLeft}};
-
-      $("#slider-block").css({left: offLeft + value * (Math.abs({{.offLeft}}) / 100)});
+      
+      $("#slider-block").css({left: (offLeft + value * (300 - 30) / 100)})
     }
   });
+});
+
+function sliderCall() {
+  console.log($("#slider-block").css('left'));
+  $.post("", {
+    action: 'verify',
+    accuracy: $("#slider-block").css('left').replace("px", "")
+  }, function (resp) {
+    alert(resp.msg);
+  });
+}
+
+$('#slideTest7').mouseup(function() {
+  sliderCall();
 });
 
 init();

@@ -17,3 +17,12 @@ func (p *baseController) Prepare() {
 	p.controller = strings.ToLower(controller[0 : len(controller)-10])
 	p.action = strings.ToLower(action)
 }
+
+func getResponse(code int, msg string, data interface{}) map[string]interface{} {
+	response := make(map[string]interface{})
+	response["code"] = code
+	response["msg"] = msg
+	response["data"] = data
+
+	return response
+}
