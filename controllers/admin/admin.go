@@ -2,6 +2,7 @@ package admin
 
 import (
 	"errors"
+	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
@@ -88,9 +89,31 @@ func (c *AdminController) Login() {
 	c.TplName = c.controller + "/login.tpl"
 }
 
+type user struct {
+	a int
+	b int
+}
+
 // 注册
-func (c *AdminController) Register() {
-	c.TplName = c.controller + "/register.tpl"
+func (this *AdminController) Register() {
+	if this.Ctx.Request.Method == "GET" {
+		this.TplName = this.controller + "/register.tpl"
+		return
+	}
+
+	// add
+	// if this.Ctx.Request.PostFormValue("action") == "add" {
+	u := params{}
+	u.Model = user{}
+	if err := this.ParseForm(&u); err != nil {
+		//handle error
+	}
+
+	fmt.Printf("%T,%#v\n", u, u)
+	this.Data["json"] = getResponse(0, "success", "")
+	this.ServeJSON()
+	return
+	// }
 }
 
 /*

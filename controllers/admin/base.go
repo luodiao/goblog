@@ -12,6 +12,11 @@ type baseController struct {
 	action     string
 }
 
+type params struct {
+	Action string      `form:"action"`
+	Model  interface{} `form:"data"`
+}
+
 func (p *baseController) Prepare() {
 	controller, action := p.GetControllerAndAction()
 	p.controller = strings.ToLower(controller[0 : len(controller)-10])

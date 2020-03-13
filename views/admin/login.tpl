@@ -87,7 +87,6 @@ layui.use('slider', function(){
 });
 
 function sliderCall() {
-  console.log($("#slider-block").css('left'));
   $.post("", {
     action: 'verify',
     accuracy: $("#slider-block").css('left').replace("px", "")
