@@ -14,8 +14,8 @@ type Users struct {
 	Name      string `orm:"size(128)" form:"name"`
 	Email     string `orm:"size(128)" form:"email"`
 	Password  string `orm:"size(128)" form:"password"`
-	CreatedAt int
-	UpdatedAt int
+	CreatedAt int64
+	UpdatedAt int64
 	ClientIp  string `orm:"size(128)"`
 }
 
@@ -37,6 +37,17 @@ func GetUsersById(id int) (v *Users, err error) {
 	o := orm.NewOrm()
 	v = &Users{Id: id}
 	if err = o.QueryTable(new(Users)).Filter("Id", id).RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+
+// GetUsersByName Login
+// name doesn't exist
+func GetUsersByName(name string) (v *Users, err error) {
+	o := orm.NewOrm()
+	v = &Users{}
+	if err = o.QueryTable(new(Users)).Filter("Name", name).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err

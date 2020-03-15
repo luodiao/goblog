@@ -41,7 +41,7 @@ func getClipSize() clipSize {
 	}
 }
 
-// 登录
+// Login 登录
 func (c *AdminController) Login() {
 	if c.Ctx.Request.Method == "POST" {
 		if c.Ctx.Request.PostFormValue("action") == "verify" {
@@ -59,17 +59,6 @@ func (c *AdminController) Login() {
 
 		beego.Info(uname, upass)
 	}
-
-	// fmt.Println(c.controller, c.action)
-
-	// passwordOK := "admin"
-
-	// hash, err := bcrypt.GenerateFromPassword([]byte(passwordOK), bcrypt.DefaultCost)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// fmt.Println(hash)
 
 	size := getClipSize()
 	var srcArr = [3]string{"./static/image/t1.png", "./static/image/t2.png", "./static/image/t3.png"}
@@ -91,16 +80,42 @@ func (c *AdminController) Login() {
 	c.TplName = c.controller + "/login.tpl"
 }
 
-// 注册
-func (this *AdminController) Register() {
-	this.TplName = this.controller + "/register.tpl"
+// AjaxLogin 登录表单处理
+func (c *AdminController) AjaxLogin() {
+	users := models.Users{}
+	if err := c.ParseForm(&users); err != nil {
+		return
+	}
+
+	u, err := models.GetUsersByName(users.Name)
+	if err != nil {
+		c.Data["json"] = getResponse(-1, "用户不存在", "")
+		c.ServeJSON()
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(users.Password))
+	if err != nil {
+		c.Data["json"] = getResponse(-1, "密码错误", "")
+		c.ServeJSON()
+		return
+	}
+
+	c.Data["json"] = getResponse(0, "success", "")
+	c.ServeJSON()
+	return
 }
 
-// 注册表单处理
-func (this *AdminController) AjaxRegister() {
+// Register 注册
+func (c *AdminController) Register() {
+	c.TplName = c.controller + "/register.tpl"
+}
+
+// AjaxRegister 注册表单处理
+func (c *AdminController) AjaxRegister() {
 	// 注册
 	users := models.Users{}
-	if err := this.ParseForm(&users); err != nil {
+	if err := c.ParseForm(&users); err != nil {
 		return
 	}
 
@@ -116,21 +131,26 @@ func (this *AdminController) AjaxRegister() {
 		// 如果有错误信息，证明验证没通过
 		// 打印错误信息
 		for _, err := range valid.Errors {
-			this.Data["json"] = getResponse(-1, err.Key+": "+err.Message, "")
-			this.ServeJSON()
+			c.Data["json"] = getResponse(-1, err.Key+": "+err.Message, "")
+			c.ServeJSON()
 			return
 		}
 	}
 
 	hash, _ := bcrypt.GenerateFromPassword([]byte(users.Password), bcrypt.DefaultCost)
 	users.Password = string(hash)
-	users.ClientIp = this.Ctx.Request.RemoteAddr
+	users.ClientIp = c.Ctx.Request.RemoteAddr
+	users.CreatedAt = time.Now().Unix()
+	users.UpdatedAt = time.Now().Unix()
 
-	id, _ := models.AddUsers(&users)
-	beego.Info(id)
+	if _, err := models.AddUsers(&users); err != nil {
+		c.Data["json"] = getResponse(0, "注册失败", "")
+		c.ServeJSON()
+		return
+	}
 
-	this.Data["json"] = getResponse(0, "success", "")
-	this.ServeJSON()
+	c.Data["json"] = getResponse(0, "success", "")
+	c.ServeJSON()
 	return
 }
 

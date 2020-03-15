@@ -16,6 +16,7 @@ func init() {
 
 	// Admin
 	beego.Router("/admin/login", &admin.AdminController{}, "*:Login")
+	beego.Router("/admin/ajaxLogin", &admin.AdminController{}, "post:AjaxLogin")
 
 	beego.Router("/admin/register", &admin.AdminController{}, "*:Register")
 	beego.Router("/admin/ajaxRegister", &admin.AdminController{}, "post:AjaxRegister")

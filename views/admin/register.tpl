@@ -64,7 +64,7 @@
   </div>
 </body>
 
-<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
 <script src="/static/layui/layui.all.js"></script>
 <script src="/static/js/vue.js"></script>
 <script src="/static/js/site.js"></script>
