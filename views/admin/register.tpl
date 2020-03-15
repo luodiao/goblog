@@ -84,7 +84,7 @@ const vm = new Vue({
   },
   methods: {
     save(event) {
-      /*this.isValid = true;
+      this.isValid = true;
       if (this.m.name == ''
         || this.m.email == ''
         || this.m.password == ''
@@ -95,15 +95,16 @@ const vm = new Vue({
       if (this.m.password != this.m.passwordConfirm) {
         layer.msg('两次密码不一致!!', {icon: 4});
         return false;
-      }*/
+      }
       
       var $btn = $(event.target).loading()
-      $.post("", {
-        action: 'add',
-        data: {a:1,b:2}
-      }, function (resp) {
-        console.log(resp)
-        $btn.loading('reset')
+      $.post("/admin/ajaxRegister", this.m, function (resp) {
+        if (resp.code == 0) {
+          window.location = '/admin/login'
+        } else {
+          alert(resp.msg);
+          $btn.loading('reset')
+        }
       });
     }
   }

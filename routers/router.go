@@ -12,5 +12,11 @@ func init() {
 	beego.Router("/user", &controllers.UserController{})
 
 	// beego.Router("/admin", &admin.AdminController{})
-	beego.AutoRouter(&admin.AdminController{})
+	// beego.AutoRouter(&admin.AdminController{})
+
+	// Admin
+	beego.Router("/admin/login", &admin.AdminController{}, "*:Login")
+
+	beego.Router("/admin/register", &admin.AdminController{}, "*:Register")
+	beego.Router("/admin/ajaxRegister", &admin.AdminController{}, "post:AjaxRegister")
 }

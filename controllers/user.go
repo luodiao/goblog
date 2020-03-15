@@ -1,18 +1,15 @@
 package controllers
 
 import (
-    "github.com/astaxie/beego"
-    "goblog/models"
+	"github.com/astaxie/beego"
 )
 
 type UserController struct {
-    beego.Controller
+	beego.Controller
 }
 
 func (c *UserController) Get() {
-    var user models.Users
-    count, _ := user.Query().Count()
-    c.Data["Website"] = count
-    c.Data["Email"] = count
-    c.TplName = "index.tpl"
+	c.Data["Website"] = "11"
+	c.Data["Email"] = "count"
+	c.TplName = "index.tpl"
 }

@@ -11,9 +11,9 @@ import (
 
 type Users struct {
 	Id        int
-	Name      string `orm:"size(128)"`
-	Email     string `orm:"size(128)"`
-	Password  string `orm:"size(128)"`
+	Name      string `orm:"size(128)" form:"name"`
+	Email     string `orm:"size(128)" form:"email"`
+	Password  string `orm:"size(128)" form:"password"`
 	CreatedAt int
 	UpdatedAt int
 	ClientIp  string `orm:"size(128)"`
@@ -33,7 +33,7 @@ func AddUsers(m *Users) (id int64, err error) {
 
 // GetUsersById retrieves Users by Id. Returns error if
 // Id doesn't exist
-func GetUsersById(id int64) (v *Users, err error) {
+func GetUsersById(id int) (v *Users, err error) {
 	o := orm.NewOrm()
 	v = &Users{Id: id}
 	if err = o.QueryTable(new(Users)).Filter("Id", id).RelatedSel().One(v); err == nil {
@@ -133,7 +133,7 @@ func UpdateUsersById(m *Users) (err error) {
 
 // DeleteUsers deletes Users by Id and returns error if
 // the record to be deleted doesn't exist
-func DeleteUsers(id int64) (err error) {
+func DeleteUsers(id int) (err error) {
 	o := orm.NewOrm()
 	v := Users{Id: id}
 	// ascertain id exists in the database

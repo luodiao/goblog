@@ -2,7 +2,7 @@ package admin
 
 import (
 	"errors"
-	"fmt"
+	"goblog/models"
 	"image"
 	"image/color"
 	"image/draw"
@@ -15,6 +15,8 @@ import (
 	"time"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AdminController struct {
@@ -89,31 +91,47 @@ func (c *AdminController) Login() {
 	c.TplName = c.controller + "/login.tpl"
 }
 
-type user struct {
-	a int
-	b int
-}
-
 // 注册
 func (this *AdminController) Register() {
-	if this.Ctx.Request.Method == "GET" {
-		this.TplName = this.controller + "/register.tpl"
+	this.TplName = this.controller + "/register.tpl"
+}
+
+// 注册表单处理
+func (this *AdminController) AjaxRegister() {
+	// 注册
+	users := models.Users{}
+	if err := this.ParseForm(&users); err != nil {
 		return
 	}
 
-	// add
-	// if this.Ctx.Request.PostFormValue("action") == "add" {
-	u := params{}
-	u.Model = user{}
-	if err := this.ParseForm(&u); err != nil {
-		//handle error
+	// valid
+	valid := validation.Validation{}
+	valid.Required(users.Name, "name")
+	valid.MaxSize(users.Name, 16, "name")
+	valid.MinSize(users.Name, 5, "name")
+	valid.Email(users.Email, "email")
+	valid.MinSize(users.Password, 5, "password")
+	valid.MaxSize(users.Password, 16, "password")
+	if valid.HasErrors() {
+		// 如果有错误信息，证明验证没通过
+		// 打印错误信息
+		for _, err := range valid.Errors {
+			this.Data["json"] = getResponse(-1, err.Key+": "+err.Message, "")
+			this.ServeJSON()
+			return
+		}
 	}
 
-	fmt.Printf("%T,%#v\n", u, u)
+	hash, _ := bcrypt.GenerateFromPassword([]byte(users.Password), bcrypt.DefaultCost)
+	users.Password = string(hash)
+	users.ClientIp = this.Ctx.Request.RemoteAddr
+
+	id, _ := models.AddUsers(&users)
+	beego.Info(id)
+
 	this.Data["json"] = getResponse(0, "success", "")
 	this.ServeJSON()
 	return
-	// }
 }
 
 /*
