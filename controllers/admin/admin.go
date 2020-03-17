@@ -14,7 +14,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -54,10 +53,6 @@ func (c *AdminController) Login() {
 			c.ServeJSON()
 			return
 		}
-		uname := c.GetString("username")
-		upass := c.GetString("password")
-
-		beego.Info(uname, upass)
 	}
 
 	size := getClipSize()
