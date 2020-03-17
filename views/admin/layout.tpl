@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>Go blog</title>
   <link rel="stylesheet" href="/static/layui/css/layui.css">
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/vue.js"></script>
+  <script src="/static/js/site.js"></script>
+  <script src="/static/layui/layui.all.js"></script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -42,16 +46,14 @@
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-        <!-- <li class="layui-nav-item layui-nav-itemed">
-          <a class="" href="javascript:;">所有商品</a>
+        <li class="layui-nav-item"><a href=""><i class="layui-icon layui-icon-console"></i>&nbsp;&nbsp;&nbsp; Site 站点设置</a></li>
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;"><i class="layui-icon layui-icon-read"></i>&nbsp;&nbsp;&nbsp; Article 文章管理</a>
           <dl class="layui-nav-child">
-            <dd><a href="javascript:;">列表一</a></dd>
-            <dd><a href="javascript:;">列表二</a></dd>
-            <dd><a href="javascript:;">列表三</a></dd>
-            <dd><a href="">超链接</a></dd>
+            <dd><a href="/admin/category">类别设置</a></dd>
           </dl>
         </li>
-        <li class="layui-nav-item">
+        <!-- <li class="layui-nav-item">
           <a href="javascript:;">解决方案</a>
           <dl class="layui-nav-child">
             <dd><a href="javascript:;">列表一</a></dd>
@@ -59,8 +61,6 @@
             <dd><a href="">超链接</a></dd>
           </dl>
         </li> -->
-        <li class="layui-nav-item"><a href=""><i class="layui-icon layui-icon-console"></i>&nbsp;&nbsp;&nbsp; Site 站点设置</a></li>
-        <li class="layui-nav-item"><a href=""><i class="layui-icon layui-icon-read"></i>&nbsp;&nbsp;&nbsp; Article 文章设置</a></li>
       </ul>
     </div>
   </div>
@@ -75,13 +75,5 @@
     © Goblog
   </div>
 </div>
-<script src="/static/layui/layui.all.js"></script>
-<script>
-//JavaScript代码区域
-layui.use('element', function(){
-  var element = layui.element;
-  
-});
-</script>
 </body>
 </html>

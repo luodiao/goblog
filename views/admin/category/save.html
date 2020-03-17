@@ -1,0 +1,84 @@
+<fieldset class="layui-elem-field layui-field-title">
+  <legend>类别设置</legend>
+</fieldset>
+
+<div class="layui-row" id="app">
+  <div class="layui-col-xs6">
+    <form class="layui-form" action="">
+      <div class="layui-form-item">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-block">
+          <input type="text" placeholder="类别名称" v-model.trim="m.Category" class="layui-input">
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">权重</label>
+        <div class="layui-input-block">
+          <input type="number" placeholder="权重" v-model.number="m.Weight" class="layui-input">
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">颜色</label>
+        <div class="layui-input-block">
+          <div id="color-box"></div>
+        </div>
+      </div>
+
+      <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">描述</label>
+        <div class="layui-input-block">
+          <textarea placeholder="请输入内容" v-model.trim="m.Remark" class="layui-textarea"></textarea>
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button type="button" class="layui-btn" @click="save">立即提交</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const vm = new Vue({
+  el: "#app",
+  data() {
+    return {
+      m: {{.m}}
+    };
+  },
+  methods: {
+    save(event) {
+      var $btn = $(event.target).loading();
+
+      $.post("/admin/category/save", Object.assign({_xsrf: "{{._xsrf}}"}, this.m), function (resp) {
+        if (resp.code == 0) {
+          window.location = '/admin/category';
+        } else {
+          alert(resp.msg);
+          $btn.loading('reset');
+        }
+      });
+    }
+  },
+  created() {
+    var _this = this;
+    $(function(){
+      layui.use('colorpicker', function(){
+        var colorpicker = layui.colorpicker;
+        colorpicker.render({
+          elem: '#color-box',
+          color: _this.m.Color,
+          change: function(color){
+            _this.m.Color = color;
+          }
+        });
+      });
+    });
+  }
+});
+
+</script>

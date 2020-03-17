@@ -22,4 +22,9 @@ func init() {
 
 	// index
 	beego.Router("/admin", &admin.IndexController{}, "*:Index")
+
+	// category
+	beego.Router("/admin/category", &admin.CategoryController{}, "*:Index")
+	beego.Router("/admin/category/save/?:id", &admin.CategoryController{}, "get:Save")
+	beego.Router("/admin/category/save", &admin.CategoryController{}, "post:AjaxSave")
 }

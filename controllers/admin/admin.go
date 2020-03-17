@@ -68,6 +68,8 @@ func (c *AdminController) Login() {
 	// 原图
 	glue(src, "./static/image/watermark.png", "./static/image/out_bg.png", size.x0, size.y0, true)
 
+	c.Layout = "admin/blank.tpl"
+
 	v := strconv.FormatInt(time.Now().Unix(), 10)
 	c.Data["offLeft"] = size.x0 - (size.x0 * 2)
 	c.Data["verifyImg"] = "/static/image/out.png?v=" + v
@@ -103,6 +105,7 @@ func (c *AdminController) AjaxLogin() {
 
 // Register 注册
 func (c *AdminController) Register() {
+	c.Layout = "admin/blank.tpl"
 	c.TplName = c.controller + "/register.tpl"
 }
 
