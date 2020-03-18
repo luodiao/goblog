@@ -9,6 +9,11 @@
   <script src="/static/js/vue.js"></script>
   <script src="/static/js/site.js"></script>
   <script src="/static/layui/layui.all.js"></script>
+  <style>
+  .has-error {
+    border: 1px solid red;
+  }
+  </style>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -51,6 +56,7 @@
           <a class="" href="javascript:;"><i class="layui-icon layui-icon-read"></i>&nbsp;&nbsp;&nbsp; Article 文章管理</a>
           <dl class="layui-nav-child">
             <dd><a href="/admin/category">类别设置</a></dd>
+            <dd><a href="/admin/article">文章设置</a></dd>
           </dl>
         </li>
         <!-- <li class="layui-nav-item">

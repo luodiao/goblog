@@ -46,6 +46,7 @@ func (c *CategoryController) Save() {
 	} else {
 		id64, _ := strconv.ParseInt(id, 10, 64)
 		m, _ := models.GetCategoryById(id64)
+
 		c.Data["m"] = m
 	}
 

@@ -11,7 +11,9 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"path"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/astaxie/beego/validation"
@@ -283,4 +285,40 @@ func hdImage(m image.Image) *image.RGBA {
 	}
 
 	return newRgba
+}
+
+// Upload 上传图片
+func (c *AdminController) Upload() {
+	result := make(map[string]interface{})
+
+	file, info, err := c.GetFile("file")
+	if err != nil {
+		result["status"] = false
+		result["msg"] = "File retrieval failure"
+		c.Data["json"] = result
+		c.ServeJSON()
+		return
+	}
+
+	defer file.Close()
+
+	var dir = "static/upload/"
+	suffix := info.Filename[strings.LastIndex(info.Filename, "."):]
+	filename := "upload-" + strconv.FormatInt(time.Now().Unix(), 11) + "." + suffix
+	err = c.SaveToFile("file", path.Join(dir, filename))
+	if err != nil {
+		result["status"] = false
+		result["msg"] = "File upload failed！"
+		c.Data["json"] = result
+		c.ServeJSON()
+		return
+	}
+
+	result["status"] = true
+	result["msg"] = "success"
+	result["path"] = "/" + dir + filename
+
+	c.Data["json"] = result
+	c.ServeJSON()
+	return
 }

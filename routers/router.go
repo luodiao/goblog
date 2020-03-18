@@ -20,12 +20,20 @@ func init() {
 	beego.Router("/admin/register", &admin.AdminController{}, "*:Register")
 	beego.Router("/admin/ajaxRegister", &admin.AdminController{}, "post:AjaxRegister")
 
+	// upload
+	beego.Router("/admin/upload", &admin.AdminController{}, "post:Upload")
+
 	// index
-	beego.Router("/admin", &admin.IndexController{}, "*:Index")
+	beego.Router("/admin", &admin.IndexController{}, "get:Index")
 
 	// category
-	beego.Router("/admin/category", &admin.CategoryController{}, "*:Index")
+	beego.Router("/admin/category", &admin.CategoryController{}, "get:Index")
 	beego.Router("/admin/category/save/?:id", &admin.CategoryController{}, "get:Save")
 	beego.Router("/admin/category/save", &admin.CategoryController{}, "post:AjaxSave")
 	beego.Router("/admin/category/remove", &admin.CategoryController{}, "post:AjaxRemove")
+
+	// article
+	beego.Router("/admin/article", &admin.ArticleController{}, "get:Index")
+	beego.Router("/admin/article/save/?:id", &admin.ArticleController{}, "get:Save")
+	beego.Router("/admin/article/save", &admin.ArticleController{}, "post:AjaxSave")
 }

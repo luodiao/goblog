@@ -26,6 +26,7 @@
           <th>权重</th>
           <th>描述</th>
           <th>最后更新时间</th>
+          <th>状态</th>
           <th>操作</th>
         </tr> 
       </thead>
@@ -40,6 +41,20 @@
           <td>@[[item.Weight]]</td>
           <td>@[[item.Remark]]</td>
           <td>@[[item.UpdatedAt]]</td>
+          <td>
+            <div class="layui-btn-group">
+              <button
+                type="button"
+                class="layui-btn layui-btn-sm"
+                :class="item.Enabled == 0 ? 'layui-btn-primary': 'layui-btn-normal'"
+                @click="setEnabled(item, 1)">激活</button>
+              <button
+                type="button"
+                class="layui-btn layui-btn-sm"
+                :class="item.Enabled == 0 ? 'layui-btn-warm' : 'layui-btn-primary'"
+                @click="setEnabled(item, 0)">屏蔽</button>
+            </div>
+          </td>
           <td>
             <a :href="'/admin/category/save/' + item.Id" class="layui-btn layui-btn-xs layui-btn-warm">
               <i class="layui-icon layui-icon-edit"></i>
@@ -73,7 +88,6 @@ const vm = new Vue({
       }
 
       var $btn = $(event.currentTarget).loading('<i class="layui-icon layui-icon-delete"></i>');
-
       $.post("/admin/category/remove", {
         _xsrf: "{{._xsrf}}",
         id: id,
@@ -83,6 +97,18 @@ const vm = new Vue({
         } else {
           alert(resp.msg);
           $btn.loading('reset');
+        }
+      });
+    },
+    setEnabled(item, enabled) {
+      if (item.Enabled == enabled) {
+        return false;
+      }
+
+      item.Enabled = enabled;
+      $.post("/admin/category/save", Object.assign({_xsrf: "{{._xsrf}}"}, item), function (resp) {
+        if (resp.code != 0) {
+          alert(resp.msg);
         }
       });
     }
