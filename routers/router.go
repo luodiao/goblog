@@ -27,4 +27,5 @@ func init() {
 	beego.Router("/admin/category", &admin.CategoryController{}, "*:Index")
 	beego.Router("/admin/category/save/?:id", &admin.CategoryController{}, "get:Save")
 	beego.Router("/admin/category/save", &admin.CategoryController{}, "post:AjaxSave")
+	beego.Router("/admin/category/remove", &admin.CategoryController{}, "post:AjaxRemove")
 }

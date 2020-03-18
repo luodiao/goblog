@@ -74,6 +74,7 @@
     <!-- 底部固定区域 -->
     © Goblog
   </div>
+  <script src="/static/layui/layui.all.js"></script>
 </div>
 </body>
 </html>

@@ -3,11 +3,92 @@
 </fieldset>
 
 <div class="layui-row" id="app">
-  <div class="layui-col-xs6">
+  <div class="layui-col-xs12">
+    <div class="layui-row">
+      <div class="layui-col-xs10">
+        &nbsp;
+      </div>
+      <div class="layui-col-xs2" style="text-align:right">
+        <a href="/admin/category/save" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-add-1"></i> 新增类别</a>
+      </div>
+    </div>
     
+    <table class="layui-table">
+      <colgroup>
+        <col width="150">
+        <col width="200">
+        <col>
+      </colgroup>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>名称</th>
+          <th>权重</th>
+          <th>描述</th>
+          <th>最后更新时间</th>
+          <th>操作</th>
+        </tr> 
+      </thead>
+      <tbody>
+        <tr v-for="item in init.list">
+          <td>@[[item.Id]]</td>
+          <td>
+            <span :style="{color: item.Color}">
+            @[[item.Category]] - @[[item.Alias]]
+            </span>
+          </td>
+          <td>@[[item.Weight]]</td>
+          <td>@[[item.Remark]]</td>
+          <td>@[[item.UpdatedAt]]</td>
+          <td>
+            <a :href="'/admin/category/save/' + item.Id" class="layui-btn layui-btn-xs layui-btn-warm">
+              <i class="layui-icon layui-icon-edit"></i>
+            </a>
+            <button class="layui-btn layui-btn-xs layui-btn-danger" @click="remove(item.Id)">
+              <i class="layui-icon layui-icon-delete"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <script>
+const vm = new Vue({
+  el: "#app",
+  delimiters: ['@[[', ']]'],
+  data() {
+    return {
+      init: {
+        list: {{.list}},
+        total: {{.total}}
+      }
+    };
+  },
+  methods: {
+    remove(id) {
+      if (!confirm("Are you sure to delete?")) {
+        return false;
+      }
 
+      var $btn = $(event.currentTarget).loading('<i class="layui-icon layui-icon-delete"></i>');
+
+      $.post("/admin/category/remove", {
+        _xsrf: "{{._xsrf}}",
+        id: id,
+      }, function (resp) {
+        if (resp.code == 0) {
+          window.location.reload();
+        } else {
+          alert(resp.msg);
+          $btn.loading('reset');
+        }
+      });
+    }
+  },
+  created() {
+    
+  }
+});
 </script>

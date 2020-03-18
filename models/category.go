@@ -18,6 +18,7 @@ type Category struct {
 	Remark    string `orm:"size(128)"`
 	Enabled   int
 	CreatedAt string `orm:"size(128)"`
+	UpdatedAt string `orm:"size(128)"`
 }
 
 func init() {

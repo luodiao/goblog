@@ -32,15 +32,5 @@ func getResponse(code int, msg string, data interface{}) map[string]interface{} 
 }
 
 func getCurrentDate() string {
-
 	return time.Now().Format("2006-01-02 15:04:05")
-	// current := time.Now()
-	// year := current.Year()
-	// month := current.Month()
-	// day := current.Day()
-	// hour := current.Hour()
-	// minute := current.Minute()
-	// second := current.Second()
-
-	// return string(year) + "-" + string(month) + "-" + string(day) + " " + string(hour) + ":" + string(minute) + ":" + string(second)
 }
