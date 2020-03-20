@@ -96,9 +96,6 @@ func (c *CategoryController) AjaxSave() {
 
 // AjaxRemove 删除类别
 func (c *CategoryController) AjaxRemove() {
-
-	beego.Info(c.GetString("id"))
-
 	id64, _ := c.GetInt64("id", 10)
 	err := models.DeleteCategory(id64)
 	if err != nil {

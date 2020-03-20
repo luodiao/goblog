@@ -13,6 +13,58 @@
       </div>
     </div>
     
+    <table class="layui-table">
+      <colgroup>
+        <col width="150">
+        <col width="200">
+        <col>
+      </colgroup>
+      <thead>
+        <tr>
+          <th>名称</th>
+          <th>类别</th>
+          <th>权重</th>
+          <th>标签</th>
+          <th>访问量</th>
+          <th>最后更新时间</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr> 
+      </thead>
+      <tbody>
+        <tr v-for="item in init.articleList">
+          <td>@[[item.Title]]</td>
+          <td>@[[getCategory(item.FkCategoryId)]]</td>
+          <td>@[[item.Weight]]</td>
+          <td>@[[item.Tags]]</td>
+          <td>@[[item.RealPv]]</td>
+          <td>@[[item.UpdatedAt]]</td>
+          <td>
+            <div class="layui-btn-group">
+              <button
+                type="button"
+                class="layui-btn layui-btn-sm"
+                :class="item.Status == 0 ? 'layui-btn-primary': 'layui-btn-normal'"
+                @click="setEnabled(item, 1)">激活</button>
+              <button
+                type="button"
+                class="layui-btn layui-btn-sm"
+                :class="item.Status == 0 ? 'layui-btn-warm' : 'layui-btn-primary'"
+                @click="setEnabled(item, 0)">屏蔽</button>
+            </div>
+          </td>
+          <td>
+            <a :href="'/admin/article/save/' + item.Id" class="layui-btn layui-btn-xs layui-btn-warm">
+              <i class="layui-icon layui-icon-edit"></i>
+            </a>
+            <button class="layui-btn layui-btn-xs layui-btn-danger" @click="remove($event, item.Id)">
+              <i class="layui-icon layui-icon-delete"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="pager"></div>
   </div>
 </div>
 
@@ -20,5 +72,83 @@
 const vm = new Vue({
   el: "#app",
   delimiters: ['@[[', ']]'],
+  data() {
+    return {
+      init: {
+        categoryList: {{.categoryList}},
+        articleList: {{.articleList}},
+        total: {{.total}},
+        p: {{.p}}
+      },
+    };
+  },
+  methods: {
+    getCategory(cid) {
+      var cname = '';
+      this.init.categoryList.forEach(row=>{
+        if (row.Id == cid) {
+          cname = row.Category
+        }
+      });
+
+      return cname;
+    },
+    setEnabled(item, status) {
+      if (item.Status == status) {
+        return false;
+      }
+
+      item.Status = status;
+      $.post("/admin/article/save", Object.assign({_xsrf: "{{._xsrf}}"}, item), function (resp) {
+        if (resp.code != 0) {
+          alert(resp.msg);
+        }
+      });
+    },
+    remove(event, id) {
+      if (!confirm("Are you sure to delete?")) {
+        return false;
+      }
+
+      var $btn = $(event.currentTarget).loading('<i class="layui-icon layui-icon-delete"></i>');
+      $.post("/admin/article/remove", {
+        _xsrf: "{{._xsrf}}",
+        id: id,
+      }, function (resp) {
+        if (resp.code == 0) {
+          window.location.reload();
+        } else {
+          alert(resp.msg);
+          $btn.loading('reset');
+        }
+      });
+    }
+  },
+  created() {
+    $(function(){
+      layui.use('laypage', function(){
+        var laypage = layui.laypage;
+        
+        laypage.render({
+          elem: 'pager',
+          count: {{.total}},
+          limit: {{.limit}},
+          curr: {{.p}},
+          prev: '<i class="layui-icon layui-icon-prev"></i>',
+          next: '<i class="layui-icon layui-icon-next"></i>',
+          layout: ['count', 'prev', 'page', 'next'],
+          jump: function(obj, first) {
+            if (!first) {
+              console.log(window.location);
+              var url = new URL(window.location.origin + window.location.pathname);
+              url.searchParams.append('p', obj.curr);
+              
+              window.location = url;
+            }
+          }
+        });
+      });
+    });
+  }
 });
 </script>

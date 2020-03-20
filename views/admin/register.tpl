@@ -98,7 +98,7 @@ const vm = new Vue({
       }
       
       var $btn = $(event.target).loading()
-      $.post("/admin/ajaxRegister", this.m, function (resp) {
+      $.post("/admin/ajaxRegister", Object.assign({_xsrf: "{{._xsrf}}"}, this.m), function (resp) {
         if (resp.code == 0) {
           window.location = '/admin/login'
         } else {

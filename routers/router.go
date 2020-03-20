@@ -15,6 +15,7 @@ func init() {
 	// login
 	beego.Router("/admin/login", &admin.AdminController{}, "*:Login")
 	beego.Router("/admin/ajaxLogin", &admin.AdminController{}, "post:AjaxLogin")
+	beego.Router("/admin/logout", &admin.AdminController{}, "get:Logout")
 
 	// register
 	beego.Router("/admin/register", &admin.AdminController{}, "*:Register")
@@ -36,4 +37,5 @@ func init() {
 	beego.Router("/admin/article", &admin.ArticleController{}, "get:Index")
 	beego.Router("/admin/article/save/?:id", &admin.ArticleController{}, "get:Save")
 	beego.Router("/admin/article/save", &admin.ArticleController{}, "post:AjaxSave")
+	beego.Router("/admin/article/remove", &admin.ArticleController{}, "post:AjaxRemove")
 }

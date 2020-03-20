@@ -13,12 +13,33 @@ type ArticleController struct {
 
 // Index 文章列表
 func (c *ArticleController) Index() {
+	p, _ := c.GetInt64("p", 1)
+
+	// 类别
+	categoryQuery := make(map[string]string)
+	categoryQuery["Enabled"] = "1"
+	categoryList, _ := models.GetAllCategory(categoryQuery, []string{"Id", "Category"}, []string{"Id"}, []string{"desc"}, 0, 100)
+
+	// 文章
+	var offset, limit int64
+	limit = 20
+	offset = (p - 1) * limit
+	query := make(map[string]string)
+	sortby := []string{"Weight", "Id"}
+	order := []string{"desc", "desc"}
+	articleList, total, _ := models.GetAllArticle(query, nil, sortby, order, offset, limit)
+
+	c.Data["categoryList"] = categoryList
+	c.Data["articleList"] = articleList
+	c.Data["total"] = total
+	c.Data["p"] = p
+	c.Data["limit"] = limit
 	c.TplName = "admin/" + c.controller + "/index.html"
 }
 
 // Save 文章设置
 func (c *ArticleController) Save() {
-	id := c.Ctx.Input.Param("id")
+	id := c.Ctx.Input.Param(":id")
 
 	// 获取类别
 	query := make(map[string]string)
@@ -70,6 +91,19 @@ func (c *ArticleController) AjaxSave() {
 	}
 
 	c.Data["json"] = getResponse(0, "success", nil)
+	c.ServeJSON()
+	return
+}
+
+// AjaxRemove 删除文章
+func (c *ArticleController) AjaxRemove() {
+	id, _ := c.GetInt64("id", 10)
+	err := models.DeleteArticle(id)
+	if err != nil {
+		c.Data["json"] = getResponse(-1, "删除失败", nil)
+	}
+
+	c.Data["json"] = getResponse(0, "success", "")
 	c.ServeJSON()
 	return
 }

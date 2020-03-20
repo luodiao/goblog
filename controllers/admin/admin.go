@@ -154,6 +154,12 @@ func (c *AdminController) AjaxRegister() {
 	return
 }
 
+// Logout 退出登录
+func (c *AdminController) Logout() {
+	c.DestroySession()
+	c.Ctx.Redirect(302, "/admin/login")
+}
+
 /*
 	剪裁图片
 	inName 输入图片名称

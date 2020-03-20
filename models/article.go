@@ -23,6 +23,7 @@ type Article struct {
 	RealPv       int
 	Status       int
 	CreatedAt    string `orm:"size(128)"`
+	UpdatedAt    string
 }
 
 func init() {

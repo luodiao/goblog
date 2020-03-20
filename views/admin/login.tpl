@@ -64,6 +64,8 @@
       </div>
     </div>
   </div>
+
+  
 </body>
 
 <script src="/static/js/jquery.min.js"></script>
@@ -71,38 +73,7 @@
 <script src="/static/js/vue.js"></script>
 <script src="/static/js/site.js"></script>
 <script>
-layui.use('slider', function(){
-  var slider = layui.slider;
-  
-  //渲染
-  slider.render({
-    elem: '#slideTest7'
-    ,tips: false
-    ,change: function(value){
-      var offLeft = {{.offLeft}};
-      
-      $("#slider-block").css({left: (offLeft + value * (300 - 30) / 100)})
-    }
-  });
-});
 
-function sliderCall() {
-  $.post("", {
-    action: 'verify',
-    accuracy: $("#slider-block").css('left').replace("px", "")
-  }, function (resp) {
-    alert(resp.msg);
-  });
-}
-
-$('#slideTest7').mouseup(function() {
-  sliderCall();
-});
-
-init();
-function init() {
-  $("#slider-block").css({left: {{.offLeft}}});
-}
 
 const vm = new Vue({
   el: "#main",
@@ -118,7 +89,7 @@ const vm = new Vue({
   methods: {
     login() {
       var $btn = $(event.target).loading()
-      $.post("/admin/ajaxLogin", this.m, function (resp) {
+      $.post("/admin/ajaxLogin", Object.assign({_xsrf: "{{._xsrf}}"}, this.m), function (resp) {
         if (resp.code == 0) {
           window.location = '/admin'
         } else {
@@ -127,8 +98,47 @@ const vm = new Vue({
         }
       });
     }
+  },
+  created() {
+    $(function(){
+      layui.use('slider', function(){
+      var slider = layui.slider;
+      
+      //渲染
+      slider.render({
+          elem: '#slideTest7'
+          ,tips: false
+          ,change: function(value){
+            var offLeft = {{.offLeft}};
+            
+            $("#slider-block").css({left: (offLeft + value * (300 - 30) / 100)})
+          }
+        });
+      });
+
+      
+    });
   }
 });
+
+function sliderCall() {
+  $.post("", {
+    _xsrf: "{{._xsrf}}",
+    action: 'verify',
+    accuracy: $("#slider-block").css('left').replace("px", "")
+  }, function (resp) {
+    alert(resp.msg);
+  });
+}
+
+$('#slideTest7').mouseup(function() {
+  sliderCall();
+});
+
+init();
+function init() {
+  $("#slider-block").css({left: {{.offLeft}}});
+}
 </script>
 </html>
 
