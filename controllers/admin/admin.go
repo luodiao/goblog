@@ -100,6 +100,8 @@ func (c *AdminController) AjaxLogin() {
 		return
 	}
 
+	c.SetSession("user", u)
+
 	c.Data["json"] = getResponse(0, "success", "")
 	c.ServeJSON()
 	return

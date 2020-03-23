@@ -41,7 +41,7 @@
         </a>
         <dl class="layui-nav-child">
           <dd><a href="">修改密码</a></dd>
-          <dd><a href="">退出</a></dd>
+          <dd><a href="/admin/logout">退出</a></dd>
         </dl>
       </li>
     </ul>
