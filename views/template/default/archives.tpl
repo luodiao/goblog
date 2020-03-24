@@ -15,7 +15,7 @@
       <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
       <div class="layui-timeline-content layui-text">
         <h3 class="layui-timeline-title">{{$value.UpdatedAt}}</h3>
-        <h5>{{$value.Title}}</h5>
+        <h5><a href="/detail/{{$value.Id}}">{{$value.Title}}</a></h5>
         <p>
           {{$value.Remark}}
         </p>

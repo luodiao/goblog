@@ -202,7 +202,7 @@
         <h5 class="widget-title" style="margin-left: 15px;">最新文章</h5>
         {{range $key, $value := .articleTop5}}
         <div class="recent-post">
-          <a href="" class="first">{{$value.FkCategoryId | getCategory}}</a>
+          <a href="/?category={{$value.FkCategoryId}}" class="first">{{$value.FkCategoryId | getCategory}}</a>
           <a href="/detail/{{$value.Id}}">{{$value.Title}}</a>
           <p>2020-02-10</p>
         </div>

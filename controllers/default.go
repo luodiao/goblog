@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"goblog/models"
+	"math/rand"
 	"strconv"
+	"strings"
 
 	"github.com/astaxie/beego"
 )
@@ -68,12 +70,24 @@ func (c *MainController) Prepare() {
 // Index 首页
 func (c *MainController) Index() {
 	p, _ := c.GetInt64("p", 1)
+	alias := c.GetString("alias", "")
+	categoryID := c.GetString("category", "")
 
 	// 获取文章
 	var offset int64
 	offset = (p - 1) * c.limit
+
+	query := map[string]string{}
+	query["Status"] = "1"
+	if alias != "" {
+		query["FkCategoryId"] = strconv.FormatInt(getCategoryIdByAlias(alias), 10)
+	}
+	if categoryID != "" {
+		query["FkCategoryId"] = categoryID
+	}
+
 	articleList, _, _ := models.GetAllArticle(
-		map[string]string{"Status": "1"},
+		query,
 		[]string{"Id", "FkCategoryId", "Title", "Remark", "UpdatedAt"},
 		[]string{"Weight", "Id"},
 		[]string{"desc", "desc"},
@@ -111,6 +125,55 @@ func (c *MainController) Archives() {
 	c.TplName = "template/" + c.template + "/archives.tpl"
 }
 
+// Tags 标签
+func (c *MainController) Tags() {
+	tags := make(map[string]map[string]string)
+	colors := [7]string{
+		"",
+		"layui-bg-orange",
+		"layui-bg-green",
+		"layui-bg-cyan",
+		"layui-bg-blue",
+		"layui-bg-black",
+		"layui-bg-gray",
+	}
+
+	// 文章tags
+	articleList, _, _ := models.GetAllArticle(
+		map[string]string{"Status": "1"},
+		[]string{"Id", "Tags"},
+		[]string{"UpdatedAt"},
+		[]string{"desc"},
+		0,
+		50,
+	)
+	for _, article := range articleList {
+		tmp := article.(map[string]interface{})
+		if tmp["Tags"].(string) != "" {
+			s := strings.Split(tmp["Tags"].(string), ",")
+			for i := 0; i < len(s); i++ {
+				tags[s[i]] = map[string]string{
+					"url":   "/?tag=" + s[i],
+					"color": colors[rand.Intn(7)],
+				}
+			}
+		}
+	}
+
+	// 分类tags
+	for _, category := range globalCategoryList {
+		tmp := category.(map[string]interface{})
+		tags[tmp["Category"].(string)] = map[string]string{
+			"url":   "/?alias=" + tmp["Alias"].(string),
+			"color": colors[rand.Intn(7)],
+		}
+	}
+
+	c.Data["tags"] = tags
+
+	c.TplName = "template/" + c.template + "/tags.tpl"
+}
+
 func getSiteConfig() SiteConfig {
 	navs := make(map[int]map[string]string)
 	navs[0] = map[string]string{"title": "主页", "url": "/"}
@@ -126,6 +189,17 @@ func getSiteConfig() SiteConfig {
 		Location: "Bei jing",
 		Navs:     navs,
 	}
+}
+
+func getCategoryIdByAlias(alias string) int64 {
+	for _, category := range globalCategoryList {
+		tmp := category.(map[string]interface{})
+		if tmp["Alias"].(string) == alias {
+			return tmp["Id"].(int64)
+		}
+	}
+
+	return 0
 }
 
 func GetCategory(id int64) string {

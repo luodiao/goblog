@@ -37,7 +37,7 @@ a {
     <a href="/detail/{{$value.Id}}" class="article-title">{{$value.Title}}</a>
   </h1>
   <div class="article-meta">
-    类别：<a href="#"><i class="layui-icon layui-icon-list"></i> {{$value.FkCategoryId | getCategory}}</a>
+    类别：<a href="/?category={{$value.Id}}"><i class="layui-icon layui-icon-list"></i> {{$value.FkCategoryId | getCategory}}</a>
     <span class="date"> {{$value.UpdatedAt}}</span>
   </div>
 

@@ -12,6 +12,7 @@ func init() {
 	beego.Router("/", &controllers.MainController{}, "get:Index")
 	beego.Router("/detail/:id", &controllers.MainController{}, "get:Detail")
 	beego.Router("/archives", &controllers.MainController{}, "get:Archives")
+	beego.Router("/tags", &controllers.MainController{}, "get:Tags")
 
 	/* Admin */
 	// login
