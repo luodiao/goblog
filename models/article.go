@@ -126,6 +126,13 @@ func GetAllArticle(query map[string]string, fields []string, sortby []string, or
 	return nil, 0, err
 }
 
+// GetTotalArticle 返回文章总数
+func GetTotalArticle() int64 {
+	o := orm.NewOrm()
+	total, _ := o.QueryTable(new(Article)).Count()
+	return total
+}
+
 // UpdateArticle updates Article by Id and returns error if
 // the record to be updated doesn't exist
 func UpdateArticleById(m *Article) (err error) {

@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>Go blog</title>
-  <link rel="stylesheet" href="/static/layui/css/layui.css">
-  <script src="/static/js/jquery.min.js"></script>
-  <script src="/static/js/vue.js"></script>
-  <script src="/static/js/site.js"></script>
-  <script src="/static/layui/layui.all.js"></script>
+  <title>{{.site.Title}}</title>
+  {{assets_css "/static/layui/css/layui.css"}}
+  {{assets_js "/static/js/jquery.min.js"}}
+  {{assets_js "/static/js/vue.js"}}
+  {{assets_js "/static/js/site.js"}}
+  {{assets_js "/static/layui/layui.all.js"}}
   <style>
     body {
       color: rgb(86, 90, 95);
@@ -145,19 +145,17 @@
     }
   </style>
 </head>
-<body class="layui-layout-body">
+<body>
   <header id="header">
     <div class="layui-main">
       <a href="/" id="logo">
         <i class="logo"></i>
-        <span class="site-title">徐靖峰|个人博客</span>
+        <span class="site-title">{{.site.Title}}</span>
       </a>
       <nav id="main-nav">
-        <a class="main-nav-link" href="/.">主页</a>
-        <a class="main-nav-link" href="/archives">归档</a>
-        <a class="main-nav-link" href="/categories">分类</a>
-        <a class="main-nav-link" href="/about">关于</a>
-        <a class="main-nav-link" href="https://github.com/Gurudin" target="_blank">GitHub</a>
+        {{range $key, $value := .site.Navs}}
+        <a class="main-nav-link" href="{{$value.url}}">{{$value.title}}</a>
+        {{end}}
       </nav>
 
       <div id="search-form-wrap">
@@ -173,13 +171,13 @@
    <div class="layui-row">
       <div class="layui-col-md2">
         <div class="profile">
-          <img src="https://www.cnkirito.moe/css/images/avatar.png" class="avatar" width="70%">
-          <h2 class="name">徐靖峰</h2>
-          <p class="location"><i class="layui-icon layui-icon-location"></i>中国，杭州</p>
+          <img src="{{.site.Avatar}}" class="avatar" width="70%">
+          <h2 class="name">{{.site.Name}}</h2>
+          <p class="location"><i class="layui-icon layui-icon-location"></i> {{.site.Location}}</p>
 
           <div class="stat">
-            <p class="first">128<br>文章</p>
-            <p>57<br>标签</p>
+            <p class="first">{{.total}}<br>文章</p>
+            <p>53<br>标签</p>
           </div>
 
           <div class="stat-bottom">
@@ -202,23 +200,13 @@
 
       <div class="layui-col-md3 sidebar">
         <h5 class="widget-title" style="margin-left: 15px;">最新文章</h5>
+        {{range $key, $value := .articleTop5}}
         <div class="recent-post">
-          <a href="" class="first">技术杂谈</a>
-          <a href="">阿里巴巴中间件技术部春招开始啦</a>
+          <a href="" class="first">{{$value.FkCategoryId | getCategory}}</a>
+          <a href="/detail/{{$value.Id}}">{{$value.Title}}</a>
           <p>2020-02-10</p>
         </div>
-
-        <div class="recent-post">
-          <a href="" class="first">技术杂谈</a>
-          <a href="">阿里巴巴中间件技术部春招开始啦</a>
-          <p>2020-02-10</p>
-        </div>
-
-        <div class="recent-post">
-          <a href="" class="first">技术杂谈</a>
-          <a href="">阿里巴巴中间件技术部春招开始啦</a>
-          <p>2020-02-10</p>
-        </div>
+        {{end}}
       </div>
     </div>
   </div>

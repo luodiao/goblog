@@ -10,6 +10,7 @@ import (
 func init() {
 	/* Web */
 	beego.Router("/", &controllers.MainController{}, "get:Index")
+	beego.Router("/detail/:id", &controllers.MainController{}, "get:Detail")
 	beego.Router("/archives", &controllers.MainController{}, "get:Archives")
 
 	/* Admin */

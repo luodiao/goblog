@@ -76,6 +76,7 @@ func (c *ArticleController) AjaxSave() {
 	if article.Id == 0 {
 		// create
 		article.CreatedAt = getCurrentDate()
+		article.UpdatedAt = getCurrentDate()
 		_, err := models.AddArticle(&article)
 		if err != nil {
 			c.Data["json"] = getResponse(-1, "新增失败", nil)
