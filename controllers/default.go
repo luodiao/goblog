@@ -28,8 +28,8 @@ type SiteConfig struct {
 
 // Prepare 渲染前调用方法
 func (c *MainController) Prepare() {
-	// 默认default模板
-	c.template = "default"
+	// 默认default模板 支持两种模板 default or card
+	c.template = "card"
 
 	// 默认分页
 	c.limit = 20
@@ -176,11 +176,11 @@ func (c *MainController) Tags() {
 
 func getSiteConfig() SiteConfig {
 	navs := make(map[int]map[string]string)
-	navs[0] = map[string]string{"title": "主页", "url": "/"}
-	navs[1] = map[string]string{"title": "归档", "url": "/archives"}
-	navs[2] = map[string]string{"title": "标签", "url": "/tags"}
-	navs[3] = map[string]string{"title": "关于", "url": "/about"}
-	navs[4] = map[string]string{"title": "GitHub", "url": "https://github.com/Gurudin"}
+	navs[0] = map[string]string{"title": "主页", "url": "/", "icon": "layui-icon layui-icon-home"}
+	navs[1] = map[string]string{"title": "归档", "url": "/archives", "icon": "layui-icon layui-icon-template"}
+	navs[2] = map[string]string{"title": "标签", "url": "/tags", "icon": "layui-icon layui-icon-note"}
+	navs[3] = map[string]string{"title": "关于", "url": "/about", "icon": "layui-icon layui-icon-about"}
+	navs[4] = map[string]string{"title": "GitHub", "url": "https://github.com/Gurudin", "icon": "layui-icon layui-icon-fonts-code"}
 
 	return SiteConfig{
 		Title:    "古鲁丁 | 博客",
